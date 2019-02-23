@@ -1,2 +1,9 @@
-cls
-type s:instructions.txt
+; Noname, 23.02.19
+
+alias x endcli
+alias r reboot
+
+;mount KCon: from devs:kingcon-mountlist
+newshell "CON:/15/640/241/devboot-amiga/NOBORDER/NODRAG" from s:shell-startup
+
+x

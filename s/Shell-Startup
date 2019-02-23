@@ -1,0 +1,9 @@
+cls
+;cpu
+type s:instructions.txt
+
+;echo ""
+;echo "hold left mouse-button while loading to boot into Workbook."
+;echo ""
+;echo "enter <j> to run the current build, <cd/cb/cdd> to navigate."
+cb

@@ -1,7 +1,7 @@
 Welcome to devboot-amiga (v0.2, 23.02.2019)
 ===========================================
-This is an AROS shell with reqtools patch, so hit <TAB> 
-for filename-completion and file-requester
+This is an AROS shell with reqtools patch, 
+so hit <TAB> for filename-completion and file-requester
 
 To run a production do as follows:
 - cd to the desired directory (e.g. "cd wip:amiga/demo/myeffect") 

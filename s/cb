@@ -3,4 +3,5 @@
 ;07.01.98
 
 execute s:cdd.wos
-echo "Changed Back to old demo directory."
+type s:cdd.wos
+;echo "Changed Back to old demo directory."
