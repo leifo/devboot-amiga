@@ -1,0 +1,507 @@
+===============================================================================
+
+This File contains features and changes made to Directory OPUS version 4.12
+that are not reflected in the printed manual. If you are just getting
+started, you may not be too concerned with this information yet. However,
+there are a couple of new options in the Configuration Program which do not
+appear in your printed manual. These comments assume some familiarity with
+using Directory OPUS and its configuration utility.
+
+===============================================================================
+
+INOVAtronics, Inc.                         Tel: (214) 340-4991
+8499 Greenville Ave. Suite 209B            FAX: (214) 340-8514
+Dallas, TX 75231
+USA
+
+Orders: (800) 875-8499 (North America Only!)
+Hours: 9:00am-5:30pm CST/CDT
+
+Tech Support: (214) 340-4992  Hours: 11:00am-3:00pm CST/CDT
+         BBS: (214) 342-1930
+
+Inovatronics GmbH                          Tel: 49-2241-40 68 56
+Lütticher Straße 12                        Fax: 49-2241-40 67 73
+D-53842 Troisdorf-Spich
+Germany
+
+Inovatronics, Ltd.                         Tel: 44-707-662861
+Unit 11, Enterprise Centre                 FAX: 44-707-660992
+Cranborne Road
+Potters Bar, Hertfordshire EN6 3DQ
+England
+
+===============================================================================
+
+ALL SOFTWARE PROGRAMS AND DOCUMENTATION PROVIDED HEREIN, WITH THE EXCEPTION
+OF THE COMMODORE-AMIGA INSTALLER AND THE INOVAMUSIC.LIBRARY, ARE ENTIRELY
+COPYRIGHT 1990-93 BY JONATHAN POTTER. ALL RIGHTS ARE RESERVED. YOU MAY NOT
+COPY, MODIFY, RENT, LEASE OR TRANSFER THE PROGRAMS OR DOCUMENTATION BY ANY
+MEANS WHATSOEVER. THE PROGRAMS AND DOCUMENTATION ARE SOLD "AS IS" AND
+SUBJECT TO CHANGE; NO WARRANTIES ARE MADE. ALL USE IS AT YOUR OWN RISK. NO
+LIABILITY OR RESPONSIBILITY IS ASSUMED.
+   
+DirectoryOPUS, Version 4.12
+ConfigOPUS, Version 4.12
+DOpus.Library,  Version 22.6
+(c) Copyright 1989-93 Jonathan Potter.  All Rights Reserved
+
+InovaMusic.Library v3.1
+(c) Copyright 1992-93 Inovatronics, Inc.  All Rights Reserved
+
+Installer Version 1.24
+(c) Copyright 1991-93 Commodore-Amiga, Inc.  All Rights Reserved
+Reproduced and distributed under license from Commodore.
+
+   INSTALLER SOFTWARE IS PROVIDED "AS-IS" AND SUBJECT TO CHANGE; NO
+WARRANTIES ARE MADE. ALL USE IS AT YOUR OWN RISK. NO LIABILITY OR
+RESPONSIBILITY IS ASSUMED.
+   
+===============================================================================
+
+KNOWN OPERATING SYSTEM BUGS
+
+Commodore has known problems with Soft and Hard links.  Do not be surprised
+ if the links come up with wrong file information.  Most of these problems
+ are due to ExAll() and Ram:.  Commodore is working on fixes for these
+ problems.  If you don't know what links are then you don't use them, so
+ don't worry, be happy.
+ 
+===============================================================================
+
+Version 4.12
+
+===============================================================================
+ 
+New command sequence : {Q}
+--------------------------
+
+    {Q<type>}
+
+    Inserts a queried value from Directory Opus.
+    
+        {Qs} = public screen name that Directory Opus is on
+        {Qp} = rexx port name used by Directory Opus
+        {Qr} = rexx result of the last internal command
+
+    Example :
+        AmigaDOS  Echo We are on screen : "{Qs}"
+        AmigaDOS  Echo Our rexx port name is : "{Qp}"
+        Command   FinishSection
+        Command   Query ViewPlayFlags
+        AmigaDOS  Echo View play flags are : {Qr}
+
+===============================================================================
+
+New/Changes Modify/Query Command options
+----------------------------------------
+	ScreenName                   - Query the name of the screen that Directory
+	                               Opus is open on.  This may be workbench if
+	                               Opus is iconified. QUERY ONLY
+
+	PortName <name>              - The name of the rexx port used by
+	                               Directory Opus. MODIFY & QUERY
+	                               
+===============================================================================
+
+Version 4.11
+
+===============================================================================
+
+New Shortcut keys
+-----------------
+
+The following shortcut keys have been added:
+
+        Shift-Return        Displays the Buffer List in the current window.
+        Alt-Return          Displays the Device List in the current window.
+        LAmiga-Space        Scrolls to first selected file
+        RAmiga-Space        Scrolls to first selected directory
+        ]                   Displays the next gadget bank
+        [                   Displays the previous gadget bank
+
+
+Furthermore, when showing a list of pictures, the Return key will proceed to
+the next picture.
+
+===============================================================================
+
+Skip All while Searching
+------------------------
+
+When a text string is found while searching multiple files, a requester
+appears asking you if you want to read the file. A "Skip all" button has
+been added. Selecting this button continues searching the selected files
+without bringing up this requester. As a result, the files containing the
+search text will remain highlighted, files which do not contain the search
+text will be deselected. At this point you can do some other operation on
+the selected files (the ones containing the text). For example, this is a
+great way to copy files which contain some text string.
+
+===============================================================================
+
+Choosing the Parent of your Choice
+----------------------------------
+
+You can now bring up a requester which shows all the Parent Directories for
+the current directory. Simply double-click on the current directory's
+Diskname bar. Selecting an entry and clicking Okay, or double-clicking an
+entry will read the selected directory.
+
+Also, if the current directory, or any of its parent directories have
+multi-volume assigns (see your AmigaDos documentation), these will be
+displayed in the list as well.
+
+See also: ParentList command below
+
+===============================================================================
+
+File Name completion
+--------------------
+
+If you are editing the Directory Field for a Directory Window, and you are
+going to type the name of a sub-directory - you can save a few keystrokes by
+starting the name and press the Help key. Directory Opus will fill out the
+subdirectory name with the first name which starts with the name you filled
+in. Subsequent presses of the Help key will cycle through all matching
+directory names.
+
+===============================================================================
+
+Using Workbench Iconify Window as a File Viewer
+-----------------------------------------------
+
+You can drop Workbench Icons on Directory OPUS's Iconified Window bar to
+view the file. OPUS will view the file in the same manner as a double-click
+from Directory OPUS's main window. In other words, a Picture is shown, a
+Text file brings up OPUS's text viewer, etc.
+
+===============================================================================
+
+Directory Opus now supports ANIM7 and ANIM8 formats
+
+===============================================================================
+
+Running Format, Diskcopy, Install, and Info requester from a Shell
+------------------------------------------------------------------
+
+You can run OPUS's Format, Disk Copy, and Install requesters directly from
+an Amiga Dos prompt without going through Directory OPUS. All three are
+contained in the program DOpus:modules/DOpus_Disk.
+
+You select between the three by giving a command argument of F for Format, D
+for Disk Copy, and I for Install. For example:
+
+    >DOpus_Disk F         ;Brings up Format
+    >DOpus_Disk D         ;Disk Copy
+    >DOpus_Disk I         ;Install
+
+These can also be started from the Workbench; see below for the required
+Tooltypes.
+
+You can also run OPUS's Icon information requester directly by running the
+program DOpus:modules/DOpus_Icon. It needs a filename as an argument. The
+".info" on the end is optional.
+
+    >DOpus_Icon sys:prefs.info
+    >DOpus_Icon sys:prefs
+
+===============================================================================
+
+Tooltypes and Command Arguments
+-------------------------------
+
+The following Tooltypes and command arguments are supported:
+
+  Directory Opus
+
+    Tooltypes           Command Argument
+    --------------------------------------------------------------------------
+    ICONSTART               -i             Start iconified
+    BUTTONSTART             -b             Start button-iconified
+    CONFIGFILE              -c             Specify new configuration filename
+    CHECK                   -g             Check if Opus is already running
+
+  DOpus_Disk
+
+    OPERATION=Format        f              Format
+    OPERATION=Diskcopy      d              Diskcopy
+    OPERATION=Install       i              Install
+
+===============================================================================
+
+Save Button is back
+-------------------
+
+The "Save" Button on ConfigOpus's main screen, which was removed in version
+4.0, is back. Clicking this button saves the configuration without bringing
+up the file requester.
+
+===============================================================================
+
+Help Button is gone
+-------------------
+
+The help button, which was represented by a "?", has been removed from the
+ConfigOpus screens. The Help key still displays the help for the current
+screen.
+
+===============================================================================
+
+Display Copy Progress Indicator
+-------------------------------
+
+You can now have Directory OPUS display a Copy Progress Indicator, a bar
+which shows how much of a file has been copied or moved. This option has
+been added to the "Operation/Update" Editor in Config OPUS. This is
+especially useful when copying large files.
+
+The Progress indicator will appear when using the Copy, CopyTo, Move,
+MoveTo, Clone, and Encrypt operations.
+
+===============================================================================
+
+Drop Icon change
+----------------
+
+If you are running AmigaDos 3.0, ConfigOpus will open on the Workbench
+screen if possible. When it does this, the AppIcon (described on p. 91) will
+not appear on the Workbench screen. Instead, drop the Icons directly on the
+editor Window.
+
+===============================================================================
+
+Paint Mode
+----------
+
+In the Buttons, Menus, and Drives editor screens, there is a new menu called
+"Tools" with a menu item called "Paint mode". Paint mode allows you to
+easily set the colors of many items without bringing up the editor for each
+of them.
+
+Selecting the "Paint Mode" menu item brings up a requester which allows you
+to select the Foreground and Background colors you want to paint with. When
+you select Okay, the title on the Editor will contain the text "(Paint Mode
+Active)" and the "Paint Mode" menu will have a checkmark next to it. When
+you click on a Button in the Button Editor, the button will be painted with
+the selected colors (the Menu and Drives editors work in similar manner).
+You can click on as many buttons as you wish to paint. When you are done
+painting with these colors, select the "Paint Mode" menu item again. This
+will turn off Paint Mode. If you want to paint with some other colors,
+simply select the menu item "Paint Mode" again to restart the process.
+
+===============================================================================
+
+New options in Screen/General
+-----------------------------
+
+'Display status text in title bar'
+    
+      This removed the status bar at the top of Directory OPUS's main window
+      and uses the the title bar for status messages. This gives you a
+      little more room for viewing files.
+
+'New-look menus' (Only for AmigaDos 3.0 and later) 
+
+      Uses the new-look black on white menus. With this flag enabled, any
+      menu items that use the default colors of 0 on 1 will be automatically
+      mapped to 1 on 2.
+
+'Custom screen window borders'
+
+      Turns on the new Window look described below.
+
+===============================================================================
+
+New Window Look
+---------------
+
+Starting with AmigaDos version 2.0 Commodore established user interface
+style guide standards. The purpose of these standards is to provide Amiga
+owners a consistant interface for the various programs they are using. We
+strongly believe in this philosophy and are continuously evaluating our
+products in regard to this standard.
+
+As a result, some changes have been made to Directory OPUS. Primarily,
+Directory OPUS, and Config OPUS now have a slightly different look. For
+those who are interested in such details, OPUS used to open a borderless,
+backdrop window when open on a custom screen. Now, when the 'Custom screen
+window borders' flag is selected, or Directory OPUS is open on the Workbench
+or another public screen, it now opens a window with OS-supplied borders,
+Close, Zoom (under 2.0) and Depth buttons.
+
+As a result, it has real window borders. It also means the Depth button in
+the upper right corner is a Window Depth Button. Before it was a Screen
+Depth Button. Window Depth Buttons arrange Windows on a screen, Screen Depth
+Buttons arrange the screens.
+
+If you click on the Window Depth Button and Directory Opus does not push to
+the back, don't be alarmed. Below, we will tell you how to resize the
+Directory Opus Window to get access to the Screen Button.
+
+We also added an invisible Window Size Button in the lower right corner.
+When you click on the border in this corner you can resize the OPUS window.
+
+To resize the OPUS window to give you access to the Screen Depth button,
+perform the following steps.
+
+    - Click on the Window Size Button on the window border in the lower
+      right corner and move the mouse pointer up an inch or so.
+      This will give you room to move the Window down.
+    - Click on the Window Drag bar, at the top of the OPUS window,
+      drag it down.  When you release window, the Screen Title Bar and its
+      Depth button will be exposed.  
+    - Using the same Window Drag bar, position the window so you can 
+      see as much of the Screen Title Bar as you wish.
+    - Finally, using the Window Size Button, in the lower right corner,
+      drag the bottom of the window as far as it will go down and to the
+      right.
+
+Remember, to save the Window position and size, go to ConfigOpus and save
+the configuration. It will save the current window settings.
+
+===============================================================================
+
+Open Directory OPUS on a Public Screen
+--------------------------------------
+
+The Display Mode list in the "Screen/Screen Mode" editor in ConfigOpus will
+include any Public Screens allowing you to open OPUS on the selected screen.
+
+===============================================================================
+
+Screen/Sliders Editor
+---------------------
+
+There is a new editor in the Screen configuration called Sliders.
+
+This editor allows you to select the position of the Window View Sliders.
+Simply click on the buttons above the simulated window views to toggle them
+between Right and Left.
+
+===============================================================================
+
+The SHAM is back
+----------------
+
+The controversial SHAM picture is once again handled by OPUS's picture
+displayer. This mode, while unsupported by Commodore, has some popularity.
+We removed it in Version 4.0 because of its unstable nature. We could not
+get it to work with all SHAM pictures and Commodore refuses to give support
+to this rogue format. As a result, we do not guarantee it will work. With
+all that said, our SHAM viewer does work with most SHAM and now also PCHG
+pictures. Invalid SHAM pictures may still cause problems.
+
+===============================================================================
+
+FileClass Move & MoveTo now accepts $ hex values
+------------------------------------------------
+
+The Move and MoveTo operations in FileClass identification now accepts Hex
+values which are proceeded by a '$' character.
+
+Example:
+    MoveTo   $100                - Moves to the 256'th byte in the file
+
+===============================================================================
+
+New/Changes Modify/Query Command options
+----------------------------------------
+    PubScreen <name>             - Open up onto public screen
+                                   (you also need to set ScreenMode to 3 for
+                                    public screen and do a Redraw)
+                                    
+    ViewPlayFlags 64             - The pick best screen-mode flag
+    
+    WindowWH <w> <h>             - Change window size (immediately)
+    
+    WindowXY <x> <y>             - Change window position (immediately)
+    
+    WindowXYWH <x> <y> <w> <h>   - Change position and size (immediately)
+                                   (this only works under 2.04 or greater)
+                                   
+===============================================================================
+
+New command : SetVar
+--------------------
+
+    SetVar <name> <value>
+
+    Sets the specified local environment variable to the given value.
+    
+    Return codes :
+        RC=0     Success
+        RC=10    Attempted under 1.3 (only works under 2.0)
+        RC=20    Incorrect arguments given
+        RC=30    Failed
+    Result=undefined
+
+
+New command : Notify
+--------------------
+
+    Notify <text>
+
+    Opens a simply notification requester. This requester has a single
+    continue button. The text will be word wrapped into the requester.
+    
+    Return codes :
+        RC=0     Success
+    Result=undefined
+    
+
+New command : ParentList
+------------------------
+
+    ParentList [<window>]
+
+    Bring up a requester which shows all the Parent Directories for the
+    current directory. Selecting an entry and clicking Okay, or
+    double-clicking an entry will read in the selected directory.
+
+    If the current directory uses multi-volume assigns (see your AmigaDos
+    documentation), these will be displayed in the list as well.
+    
+    If window is not give the list will be based on the current window.
+    (-1 = current window, 0 = left window or 1 = right, defaults to -1)
+    
+    Return codes :
+        RC=0     Success
+    Result=undefined
+
+===============================================================================
+
+New command sequence : {v}
+--------------------------
+
+    {v<name>}
+
+    Inserts value of named variable in command string.
+
+    Example :
+        Command   SetVar testvar {RsEnter something}
+        AmigaDOS  Echo You typed : "{vtestvar}"
+   
+===============================================================================
+
+Documentation for those who have tried to use AddCustHandler
+------------------------------------------------------------
+
+This is the ARexx arguments which get passed to a Custom Handler
+
+    Arg0 - Operation type   (1=Double-click, 2=Click-m-click)
+
+    Arg1 - Entry number     (This is the ordinal number of the selected
+                             entry. Note that this number is assigned in the
+                             order that the entries are added; if an entry
+                             is not added at the end of the list, this
+                             number will not correctly reflect its position
+                             in the list)
+
+    Arg2 - Entry text       (This returns the text for this entry)
+
+    Arg3 - Userdata         (This is the user-assigned data for this entry.
+                             We suggest that you possibly use this value for
+                             keeping track of entries rather than the Entry
+                             number returned in Arg1).
+

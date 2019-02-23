@@ -1,0 +1,90 @@
+Short:    V1.17 display executable file structure
+Uploader: stoecker@epost.de (Dirk Stoecker)
+Author:   stoecker@epost.de (Dirk Stoecker)
+Type:     dev/moni
+Version:  1.17
+
+This program allows you to display information about the structure of an
+Amiga executable file (or a link object). HunkFunc requires OS2.0 for work.
+
+The first version of this program is made with help of HunkFunk utility
+made by Olaf Barthel. But as Olaf's utility misses a lot of hunks and
+other information, I made my own tool. This version knows a lot more
+possible configurations and is shorter, as it uses Amiga functions instead
+of ANSI-C.
+
+Know hunk types are: HUNK_UNIT, HUNK_NAME, HUNK_CODE, HUNK_DATA, HUNK_BSS,
+HUNK_(ABS)RELOC32, HUNK_(REL)RELOC16, HUNK_(REL)RELOC8, HUNK_EXT, HUNK_SYMBOL,
+HUNK_DEBUG, HUNK_END, HUNK_HEADER, HUNK_OVERLAY, HUNK_BREAK,
+HUNK_DREL32, HUNK_DREL16, HUNK_DREL8, HUNK_LIB, HUNK_INDEX,
+HUNK_RELOC32SHORT, HUNK_RELRELOC32, HUNK_ABSRELOC16, HUNK_PPC_CODE,
+HUNK_RELRELOC26.
+
+The File has following argument line:
+"FILE/M/A,SREL=SHOWRELOC/S,SSYM=SHOWSYMBOL/S,SEXT=SHOWEXTERN/S,
+ SEREF=SHOWEXTERNREF/S,SOVT=SHOWOVERLAYTABLE/S,STATS/S".
+
+FILE       You must pass at least one file name, but may pass a lot more.
+           Patterns are not supported.
+SHOWRELOC  displays all reloc entries (there may be really much of them!)
+SHOWSYMBOL displays symbol names of HUNK_SYMBOL
+SHOWEXTERN displays definitions of HUNK_EXT
+SHOWEX-REF displays references of HUNK_EXT
+SHOWOVERL. display data of overlay table
+STATS      show short statistics about file
+
+Example output:
+File 'C:AddDataTypes':
+HUNK_HEADER
+  Numhunks =         2 (0 to 1)
+  Hunk 000 =      5560 ($0015B8) Bytes
+  Hunk 001 =       160 ($0000A0) Bytes
+
+HUNK_CODE         5560 ($0015B8) Bytes
+HUNK_RELOC32
+  Summary            5 entries to hunk 1
+HUNK_END
+
+HUNK_DATA          160 ($0000A0) Bytes
+HUNK_RELOC32
+  Summary           14 entries to hunk 0
+HUNK_END
+
+- First line shows program name.
+- HUNK_HEADER is the first hunk of an executable and lists all the hunks.
+  There may be additionally comments like CHIP, FAST, ADVISORY or MEMTYPE.
+- HUNK_CODE and HUNK_DATA store information.
+- HUNK_BSS store memory space, which is filled with 0 on startup.
+- HUNK_RELOC32 (and other types) hold relocation information.
+- HUNK_END ends an hunk entry.
+- In HUNK_CODE, HUNK_DATA and HUNK_BSS the memory flags may be repeated
+  in first or second longword. The flags is displayed normally when in
+  second longword (size) and preceeded by a '_' (e.g. _CHIP), when in
+  first longword (hunk type).
+- HUNK_DREL32EXE is in real a HUNK_RELOC32SHORT which uses wrong ID due
+  to a bug in OS V37.
+
+A lot more information about executable or object file format can be found
+in:
+
+                The Amiga Guru Book
+                ©1989,1993 by Ralph Babel
+                Taunusstein 1993
+
+If HunkFunc prints a line like "HUNK_??? ($xxxx) - Aborting!", please
+contact me and send an example file (if the file is a correct one).
+
+Use this tool as you want, but WITHOUT ANY WARRANTY!
+
+Contact me at:
+
+*********************************************************************
+* snail-mail:                  * e-mail:                            *
+*   Dirk Stoecker              *   stoecker@epost.de                *
+*   Geschwister-Scholl-Str. 10 *   dirk@dstoecker.de                *
+*   01877 Bischofswerda        * world wide web:                    *
+*   GERMANY                    *   http://www.dstoecker.de/         *
+* phone:                       * pgp key:                           *
+*   GERMANY +49 (0)3594/706666 *   get from WWW pages or keyservers *
+*********************************************************************
+

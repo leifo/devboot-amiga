@@ -1,0 +1,18 @@
+Welcome to devboot-amiga (v0.2, 23.02.2019)
+===========================================
+This is an AROS shell with reqtools patch, so hit <TAB> 
+for filename-completion and file-requester
+
+To run a production do as follows:
+- cd to the desired directory (e.g. "cd wip:amiga/demo/myeffect") 
+- type "j" <ENTER> to run it
+
+To manage your directories:
+- type "cd" to see where you are
+- type "cdd" to save your current demo directory for later use
+- type "cb" to go back to the saved dir
+- type "dopus" for file-management
+
+Have fun!
+ - Noname
+

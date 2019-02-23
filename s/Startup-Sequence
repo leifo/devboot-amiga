@@ -35,7 +35,10 @@ C:SetPatch QUIET
 ;Dir >NIL: "PIPE:"
 
 ;Path "C:" "SYS:System" "S:" "SYS:Prefs" "SYS:Tools" "SYS:Utilities" QUIET
-Path "C:" "S:" QUIET
+Path "C:" "S:" "sys:Programs" "sys:Utilities" QUIET
+assign DOpus: sys:programs/dopus
+path "dopus:" add QUIET
+alias ed redit
 
 ;If EXISTS "SYS:Tools/Commodities"
 ;    Path "SYS:Tools/Commodities" QUIET ADD
@@ -51,14 +54,17 @@ Path "C:" "S:" QUIET
 
 Copy >NIL: "ENVARC:" "ENV:" ALL NOPRO NOREQ PAT "~(def_#?.info)"
 
+rtpatch >nil:
+
 Protect "S:cdd" "s" ADD QUIET
 Protect "S:cb" "s" ADD QUIET
+;Protect "s:j" "s" ADD QUIET
+alias j execute go
 
 ;Protect "S:PCD" "s" ADD QUIET
 ;Protect "S:SPat" "s" ADD QUIET
 ;Protect "S:DPat" "s" ADD QUIET
 
-;If EXISTS "S:User-Startup"
-;    Execute "S:User-Startup"
-;EndIf
-
+If EXISTS "S:User-Startup"
+    Execute "S:User-Startup"
+EndIf

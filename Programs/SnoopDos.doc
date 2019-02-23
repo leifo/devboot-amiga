@@ -1,0 +1,329 @@
+
+                 SnoopDos 1.7 -- Monitors AmigaDOS function calls
+
+         (C) Copyright Eddy Carroll, December 1992. Freely Distributable.
+
+
+INTRODUCTION
+
+    Have you ever wondered why a particular program won't seem to run?
+    It could be looking for some special files which you've forgotten to
+    install in the appropriate place. SnoopDos was designed to let you
+    resolve situations like this, though it's probably useful for other
+    things too.
+
+    For those who don't like long instruction files, simply run SnoopDos
+    with no options, then run a few application programs and look at the
+    output displayed in SnoopDos's window. Interesting, eh? For those who'd
+    like a more detailed explanation, read on...
+
+    When you start SnoopDos, it opens a console window. In this window
+    appears details of all calls made by any program on the system to the
+    CurrentDir(), DeleteFile, Execute(), LoadSeg(), Lock() and Open()
+    functions in the AmigaDOS library. The exception (as usual) is any
+    program written in BCPL; this includes most of the commands in the C:
+    directory.
+
+    SnoopDos will tell you about all attempts to load libraries, devices
+    and fonts. It will also tell you if a program looks for a specific file
+    (for example in S:) or a specific disk volume or directory. This can be
+    very useful when you're playing with new software which may require
+    certain fonts or other support files.
+
+    An unexpected bonus is that since AmigaDOS environment variables are
+    stored as files, SnoopDos will tell you the names of any environment
+    variables a program tries to read; if you see references to ENV:<name>
+    in the SnoopDos window, then a program is trying to access an environment
+    variable called <name>.
+
+
+USAGE
+
+    When you start SnoopDos, it automatically detaches itself from the CLI
+    and runs in the background. You can specify a number of options on the
+    command line, either at this time or later on by running SnoopDos again.
+    Each option can be given in lower case or upper case to respectively
+    enable or disable that setting. Alternatively, you can follow the option
+    by `1' or `0' which has the same effect. So, `-d' and `-d1' both enable
+    the "Monitor DeleteFile()" option, whereas `-d' and `-d0' both disable
+    that option. Without further ado, here's an explanation of each setting:
+
+    -a  Normally, SnoopDos uses different colours when displaying messages,
+        to allow events to be easily distinguished from each other. You can
+        force SnoopDos not to use any colour by disabling this option. This
+        can be useful if you only have a 2-colour workbench. If SnoopDos is
+        sending its output to a file, it turns off this option by default
+        (but you can turn it back on again if you like).
+
+    -c  When this option is enabled, SnoopDos prints details of all calls
+        to the CurrentDir() function. A program calls CurrentDir() when it
+        wants to change its current directory to somewhere else. Note that
+        no result is displayed for this function, since AmigaDOS does not
+        allow for the possibility of it ever failing.
+
+    -d  This option allows you to see all calls to the DeleteFile() function,
+        which is called whenever a program wants to delete a file. This can
+        be useful with unknown programs, to make sure that they don't do
+        anything nasty (though in fairness, there are much more effective
+        ways for a rogue program to do damage than by deleting a few files).
+
+    -f  When enabled, this option causes SnoopDos to print out the full
+        path names for files. For example, if a program's current directory
+        is SYS:TOOLS and it tries to open a file called FOO, then the
+        filename would be displayed as SYS:TOOLS/FOO. Normally, it would
+        just be displayed as FOO. Filenames which are so expanded are
+        prefixed by a `>' character. Filenames which already included a full
+        path specification don't have this prefix. This allows you to
+        determine if the calling program specified the full path or not.
+
+    -g  This option enables or disables the monitoring of AmigaDOS's
+        LoadSeg() function. This is used to read in a binary loadfile and is
+        most commonly used for loading in libraries, devices, fonts and
+        handlers, and by third-party DOS shells to load in external commands.
+
+    -i  When this option is enabled, SnoopDos will ignore any calls to
+        Lock() by the Shell and calls to CurrentDir() by either the Shell
+        or Workbench. This can reduce the amount of output by quite a
+        bit under Kickstart 2.0, particularly when the Shell is searching
+        the command path for a command and Workbench is checking up on
+        the mounted disk volumes (which it does once a second). This
+        option is enabled by default, but you can turn it off with -i0 to
+        see what all the fuss is about.
+
+    -l  This option enables or disables the monitoring of AmigaDOS's Lock()
+        function. Programs usually call this function to see if a particular
+        file exists, or as a prelude to some more sophisticated operation on
+        the file.
+
+    -m  This option allows SnoopDos to be activated or deactivated while
+        still leaving it running. It is included merely for completeness;
+        a much easier way to achieve the same affect is to type CTRL-D or
+        CTRL-E in the SnoopDos window.
+
+    -o  This option enables or disables the monitoring of AmigaDOS's Open()
+        function. Whenever a program wants to open a file for reading or
+        writing, it calls this function.
+
+    -s  Adds a carriage return to the end of every line output. This is
+        useful with some devices that expect a return to accompany every
+	line feed.
+
+    -w  If several tasks try to call a particular DOS function at the same
+        time, SnoopDos can only handle them one at a time. Normally, what
+        will happen is that the other tasks speed on without waiting for
+        SnoopDos and you see a warning message saying that some function
+        calls were missed (this doesn't happen very often anyway). When the
+        `-w' option is enabled however, SnoopDos will make all the
+        different tasks queue up and take their turn.
+
+        There is one important consequence of this: if a program tries to
+        access a file on a volume not currently mounted (causing AmigaDOS to
+        display a "Please insert volume xyzzy" requester), then SnoopDos will
+        print out the details about the file requested but not whether the
+        request succeeded or not; it can't do this until you respond to the
+        requester. In the meantime, other tasks may now be trying to call
+        AmigaDOS. For example, if you might try to pop open a new CLI with
+        Dmouse or PopCLI, so that you can do an ASSIGN to fake the requested
+        volume. All these tasks will have to wait until the original DOS
+        call has been completed.
+
+        Since this can confuse things (though only for the user), the option
+        is disabled by default. You should only need it if you have to be
+        absolutely sure of catching every action made by several tasks.
+
+    -x  This option enables or disables monitoring of Execute() calls.
+        Unlike most other DOS function calls, the return value from the
+        Execute() is NOT displayed; this is because when an Execute suceeds,
+        the command being executed will most likely making AmigaDOS calls of
+        of its own and if SnoopDos was waiting for Execute() to return, it
+        would skip printing these out.
+
+        Some forms of Execute() will appear to have no associated command
+        to execute. This is normal, and occurs when a program redirects
+        command input from another file.
+
+
+    By default, Snoopdos operates as if you had started it with:
+
+        SnoopDos -a1 -c1 -d1 -f0 -g1 -i1 -l0 -m1 -o1 -s0 -w0 -x1
+
+    or for those who prefer to use the other command format:
+
+        SnoopDos -a -c -d -F -g -i -L -m -o -s -w -x
+
+    There are some additional options as well, which cause immediate
+    actions to be performed. These are:
+
+    -h  Prints out a help screen for SnoopDos. Actually, typing any
+        unrecognised garbage after SnoopDos prints the help screen.
+
+    -n  If you are sending SnoopDos output to a text file, it is buffered
+        in 8K chunks to avoid doing lots of tiny writes, which can be slow.
+	Using this option disables that buffering, which is convenient if
+	you are redirecting output to a printer or similar device.
+
+    -q  Sends a message to the version of SnoopDos currently running telling
+        it to remove itself. This is one way to quit SnoopDos, the other
+        way being to type CTRL-C in its window.
+
+    -r  Prints out a brief report giving all the current settings for
+        SnoopDos (eagle-eyed users may spot a striking resemblance between
+        this display and the middle section of the help screen :-). Note
+        that all other command line options are ignored when you use -r.
+
+    -z  Allows you to specify an alternative output file for SnoopDos to
+        send messages to. The filename can follow immediately after the -z,
+        or you can leave a space if you like.
+
+        There are several uses for this option. First of all, you can use
+        it to change the location of the SnoopDos window when it opens, by
+        specifying a filename like -zCON:0/0/640/60/SnoopDos) (for a very
+        short window). You should always make sure the window is at least 77
+        columns wide or the output will look pretty messed up.
+
+        You can of course redirect output to a normal AmigaDOS file. You
+	would do this if you wanted to keep a permanent record of what hap-
+	pened on your system. This could be useful if you allow remote access
+	to your Amiga and want a record of what people do during a session.
+
+	If you say -z+filename instead of -zfilename, then SnoopDos will
+	append information to an existing file, rather than creating a
+	new file. This allows you to capture several logs in a single
+	file over a period of time. In addition, you can use the AmigaDOS
+	TYPE command to display a capture file that is currently being
+	written to by SnoopDos if it was opened with -z+; this allows you
+	to see the progress of the log to date. See also the -n option.
+
+	By default, ANSI colour is disabled when outputting to a file. You
+	can re-enable it if you like with the -a option.
+
+    -zd This option is similar to -z but it directs output to a debugging
+    	terminal connected to your serial port in the same manner as
+	Enforcer, Mungwall, and other debugging tools.
+  
+
+THE SNOOPDOS WINDOW
+
+    The SnoopDos window is divided into a number of columns, as follows:
+
+    Process name
+        The name of the process (or CLI command) that is executing the
+        DOS call in question. If the DOS call is nested (see Res. below)
+        then the process name will be prefixed by '> '.
+
+    Func
+        The function being executed (Open, Lock or Load). Open is printed
+        in white, Lock in orange and Load in black, to allow rows to be
+        quickly identifed at a glance. (Of course, if you've changed your
+        Preferences, the actual colours may be different.) Other values
+        which can appear here are Exec (for Execute), CD (for CurrentDir)
+        and Del (for DeleteFile).
+
+    Filename
+        The name of the file being accessed. Remember that when the `-f'
+        option is enabled, this will be prefixed by a `>' character if the
+        filename displayed was expanded by SnoopDos to include the current
+        directory of the calling process.
+
+    Mode
+        For Open(), this is OLD if an existing file is being opened or NEW
+        if a new file is being opened. For Lock(), this is SHAR if the lock
+        is a shared lock (i.e. several processes can access the same file) or
+        EXCL if it is an exclusive lock (only this process can access the
+        file). It remains empty for LoadSeg().
+
+    Res.
+        The result of the DOS call. This is either `Okay' in white or
+        `Fail' in orange. In general, you learn much more from the `Fail'
+        entries (i.e. the things the program tried to find but couldn't).
+
+        Occasionally, you may see a `>>>>' appearing here. This happens if
+        some other program has also patched DOS library in such a way that
+        the function currently being called calls another DOS function
+        itself. One such program is Rez, which tries to open a program file
+        for reading if you LoadSeg() it. In this case, the `>>>>' indicates
+        that DOS calls are being nested. The DOS calls which are nested
+        will have the associated process name prefixed by `> ' when they
+        are displayed. `> (Done)' is displayed when the top level DOS
+        function exits, and the exit status is displayed on the same
+        line in the Res. column as normal.
+
+    You can type several keys into the SnoopDos window. CTRL-C will terminate
+    SnoopDos. CTRL-D will disable monitoring temporarily (and print a brief
+    message to that effect); CTRL-E enables it again. Pressing Space or any
+    other key will pause the output to the window, as in a CLI window. Press
+    BackSpace to continue. Note that if you have the `-w' option enabled and
+    you pause the output, all functions for which monitoring is enabled will
+    cause the calling process to go to sleep until you restart output again.
+
+    When SnoopDos wants to quit, it makes sure that nobody else has patched
+    the DOS library after it. If something has, SnoopDos will refuse to exit
+    immediately. Instead, it will check approximately every 5 seconds to
+    see if it is safe to exit and as soon as it can, it will.
+
+
+TRICKS AND TIPS
+
+    Some users have been asking for a scrollback facility in the SnoopDos
+    window, and also a close gadget. A future version of SnoopDos may
+    include a full GUI with these features and much more, but for now,
+    you can use the following very kludgey workarounds if you like:
+
+    Scroll bar: The freely distributable console handler SPHINX: can
+    be used to provide this facility. Use a command line like:
+
+        SnoopDos -zSPHINX:////SnoopDos
+
+    You can also use the freely distributable CB program (V1.1), though this
+    is a little more involved; open a new shell window, run CB, and then
+    start SnoopDos with the line:
+
+        SnoopDos -z*
+
+    This tells SnoopDos to redirect its output to the current CLI window,
+    and so it will benefit from CB's scrollback facilities.
+
+    CLOSE Gadget: This is even more kludgey, but if you absolutely must
+    have one, you can do it under Workbench 2.0 like this. Create a batch
+    file called S:Start-SnoopDos containing the following:
+
+        SnoopDos -z*
+        Ask "Press RETURN or click the close gadget to quit SnoopDos"
+        SnoopDos -q
+        EndCli >NIL:
+
+    Then create a shell alias like this:
+
+        Alias Snoop "NewCli con:0/0/640/200/Snoop/CLOSE from s:Start-SnoopDos"
+
+    Then when you type Snoop into a Shell window, SnoopDos will start up in
+    its own Window and clicking the close gadget in that window will remove
+    it. Be warned though; CTRL-C, CTRL-D and CTRL-E will no longer work
+    properly, and pressing RETURN will also close the window.
+
+    What can I say ... when I have time, I'll write a proper GUI version.
+
+
+AUTHOR
+
+    Eddy Carroll
+
+    Email:     ecarroll@maths.tcd.ie
+
+    Phone:     +353-1-287-4566
+    Fax:       +353-1-287-5663
+
+    Snailmail: The Old Rectory,
+    	       Delgany,
+    	       Co. Wicklow,
+	       Ireland.
+
+
+DISTRIBUTION
+
+    SnoopDos may be freely distributed as long as no charge is made other
+    than to cover time and copying costs. If you want to include SnoopDos
+    as part of a commercial package (somehow I doubt it but it never hurts
+    to mention :-) then contact the author listed above. Fred Fish is
+    specifically given permission to include SnoopDos in his fine disk
+    collection.
