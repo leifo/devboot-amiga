@@ -1,0 +1,6 @@
+;CB - Change Back to old demo directory
+;by Leif 'NoName' Oppermann
+;07.01.98
+
+execute s:cdd.wos
+echo "Changed Back to old demo directory."

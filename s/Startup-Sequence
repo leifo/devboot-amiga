@@ -1,0 +1,64 @@
+; stripos - heavily stripped version of aros
+; just enough to boot and start stuff from shell
+
+FailAt 21
+
+If NOT EXISTS "RAM:Clipboards"
+    Makedir "RAM:Clipboards"
+EndIf
+If NOT EXISTS "RAM:T"
+    Makedir "RAM:T"
+EndIf
+If NOT EXISTS "RAM:ENV"
+    Makedir "RAM:ENV"
+    Assign "ENV:" "RAM:ENV"
+EndIf
+
+Assign "T:"       "RAM:T"
+Assign "CLIPS:"   "RAM:Clipboards"
+
+;Assign "KEYMAPS:" "DEVS:Keymaps"
+;Assign "LOCALE:"  "SYS:Locale"
+;Assign "LIBS:"    "SYS:Classes" ADD
+;Assign "FONTS:"   "SYS:Fonts"
+;Assign "HELP:"    "LOCALE:Help" DEFER
+;Assign "THEMES:"  "SYS:Prefs/Presets/Themes" >NIL:
+;Assign "IMAGES:"  "SYS:System/Images" DEFER
+;Assign "PRINTERS:" "DEVS:Printers"
+;Assign "WANDERER:" "SYS:System/Wanderer" DEFER
+
+C:SetPatch QUIET
+
+;Automount >NIL:
+;Mount >NIL: "DEVS:DOSDrivers/~((.#?)|(#?.info)|(#?.dbg))"
+
+;Dir >NIL: "PIPE:"
+
+;Path "C:" "SYS:System" "S:" "SYS:Prefs" "SYS:Tools" "SYS:Utilities" QUIET
+Path "C:" "S:" QUIET
+
+;If EXISTS "SYS:Tools/Commodities"
+;    Path "SYS:Tools/Commodities" QUIET ADD
+;EndIf
+
+;If EXISTS "SYS:Demos"
+;    Path "SYS:Demos" ADD QUIET
+;EndIf
+
+;If EXISTS "Sys:RexxC"
+;    Path "Sys:RexxC" ADD QUIET
+;Endif
+
+Copy >NIL: "ENVARC:" "ENV:" ALL NOPRO NOREQ PAT "~(def_#?.info)"
+
+Protect "S:cdd" "s" ADD QUIET
+Protect "S:cb" "s" ADD QUIET
+
+;Protect "S:PCD" "s" ADD QUIET
+;Protect "S:SPat" "s" ADD QUIET
+;Protect "S:DPat" "s" ADD QUIET
+
+;If EXISTS "S:User-Startup"
+;    Execute "S:User-Startup"
+;EndIf
+

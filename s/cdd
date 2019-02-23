@@ -1,0 +1,9 @@
+;CDD - Change Demo Directory
+;by Leif 'NoName' Oppermann
+;07.01.98
+
+;execute s:enable >nil:
+cd >s:cdd.wos
+;execute >nil: s:disable
+
+echo "Changed Demo Directory."
